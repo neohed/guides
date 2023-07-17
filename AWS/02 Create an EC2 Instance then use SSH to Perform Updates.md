@@ -92,6 +92,11 @@ echo "<html><body><h1>Welcome to my Web Server!</h1></body></html>" > /var/www/h
 
 5. Click "Launch instance"
 
+> The CLI command to do this is:
+> `aws ec2 run-instances --image-id <AMI-ID> --count <number-of-instances> --instance-type <instance-type> --key-name <key-pair-name> --security-group-ids <security-group-ids>
+`
+> Exam tip: You might be asked to pick the correct CLI command for this from among a number of distractors.
+
 ### Step 6: Launch Instance
 
 Your instance is now launching. It may take a few minutes for it to be ready. In the meantime, you can view its status on the Instances screen. Once the "Instance State" is "running" and the "Status Checks" column reads "2/2 checks passed", your instance is ready to use.
