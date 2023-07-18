@@ -5,6 +5,7 @@ What you will learn:
 - **Virtual Private Cloud (VPC):** You'll learn what a VPC is and how to set one up with custom settings. You'll practice setting specific CIDR blocks, enabling DNS hostnames, and enabling DNS resolution.
 
 - **Subnets:** You'll understand the role of subnets within a VPC, how to create them, and how to set up their IP addressing with CIDR blocks. You'll practice creating both public and private subnets.
+- **Subnets:** You'll understand the role of subnets within a VPC, how to create them, and how to set up their IP addressing with CIDR blocks. You'll practice creating both public and private subnets.
 
 - **Internet Gateways:** You'll learn what an Internet Gateway (IGW) is, and how to create and attach one to a VPC to enable communication with the internet.
 
@@ -177,9 +178,10 @@ By combining VPC Flow Logs with CloudWatch, you can create a comprehensive monit
    - Click "Create"
 
 2. **Create a policy to publish logs to CloudWatch:**
-2.1. Navigate to the IAM console. Click "policies".
-2.2. Click "Create policy"
-2.3. Click the "JSON" button and replace the contents of the "Policy editor" with the content below:
+  - Navigate to the IAM console. Click "policies".
+  - Click "Create policy"
+  - Click the "JSON" button and replace the contents of the "Policy editor" with the content below:
+  
 ```json
 {
  "Version": "2012-10-17",
@@ -198,21 +200,22 @@ By combining VPC Flow Logs with CloudWatch, you can create a comprehensive monit
  ]
 }
 ```
-2.4. Click "Next"
-2.5. Name: "DemoVPCFlowLogAccessCloudWatchPolicy"
-2.6. Click "Create policy"
+  - Click "Next"
+  - Name: "DemoVPCFlowLogAccessCloudWatchPolicy"
+  - Click "Create policy"
 
 3. **Create a role:**
-3.1 Select "Roles"
-3.2 Click "Create role"
-3.3 For "Trusted entity type" select "AWS service"
-3.4 For "Common use cases" select "EC2"
-3.5 Click "Next"
-3.6 Select the policy you created above.
-3.7 Click "Next"
-3.8 Enter role name: "DemoVPCFlowLogRole"
-3.9 Click "Create role"
-3.10 Select the "trust relationships" tab for this Role, click "Edit trust policy" and enter the JSON below:
+  - Select "Roles"
+  - Click "Create role"
+  - For "Trusted entity type" select "AWS service"
+  - For "Common use cases" select "EC2"
+  - Click "Next"
+  - Select the policy you created above.
+  - Click "Next"
+  - Enter role name: "DemoVPCFlowLogRole"
+  - Click "Create role"
+  -  Select the "trust relationships" tab for this Role, click "Edit trust policy" and enter the JSON below:
+  
 ```json
 {
     "Version": "2012-10-17",
@@ -234,7 +237,7 @@ By combining VPC Flow Logs with CloudWatch, you can create a comprehensive monit
     ]
 }
 ```
-3.11 Click "Update policy"
+  - Click "Update policy"
 
 2. **Enable Flow Logs in VPC:**
    - Navigate to the VPC dashboard, select the VPC you created.
