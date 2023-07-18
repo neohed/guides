@@ -23,27 +23,27 @@ Your VPC Endpoint for Secrets Manager is now set up. This ensures a private conn
 
 ## Create an IAM Role for Your Lambda Function
 
-    Before creating your Lambda function, you need an IAM role that the Lambda function will use. This role should have:
+Before creating your Lambda function, you need an IAM role that the Lambda function will use. This role should have:
 
-    - An inline policy that allows `secretsmanager:GetSecretValue` action (as your Lambda function will need to retrieve the database credentials stored in Secrets Manager)
+  - An inline policy that allows `secretsmanager:GetSecretValue` action (as your Lambda function will need to retrieve the database credentials stored in Secrets Manager)
 
-    In the AWS console, go to IAM, create a new role for Lambda
-	
-	- select Trusted entity type: AWS Service
-	- Use case: Lambda
-	- attach these policies:
-		- AWSLambdaVPCAccessExecutionRole policy attached (so that your Lambda function can access resources in your VPC)
-		- AWSLambdaBasicExecutionRole policy attached (so that your Lambda function can write logs to CloudWatch)
-	- Click Next
-	- Name the Role: LambdaCRUDRole
-	- Add a description and Tags if you wish.
-	- Click Create Role
-	
-	- Click on your Role name to view it.
-	- Under Permissions, Click the Add permissions button and select Create inline policy.
-	- Click the JSON tab.
-	- Replace <SECRET-ARN> with the ARN for your secret "dev/my-lambda/postgres" which you can copy from SecretsManager.
-	- Paste in the policy below:
+In the AWS console, go to IAM, create a new role for Lambda
+
+  - select Trusted entity type: AWS Service
+  - Use case: Lambda
+  - attach these policies:
+	- AWSLambdaVPCAccessExecutionRole policy attached (so that your Lambda function can access resources in your VPC)
+	- AWSLambdaBasicExecutionRole policy attached (so that your Lambda function can write logs to CloudWatch)
+  - Click Next
+  - Name the Role: LambdaCRUDRole
+  - Add a description and Tags if you wish.
+  - Click Create Role
+
+  - Click on your Role name to view it.
+  - Under Permissions, Click the Add permissions button and select Create inline policy.
+  - Click the JSON tab.
+  - Replace <SECRET-ARN> with the ARN for your secret "dev/my-lambda/postgres" which you can copy from SecretsManager.
+  - Paste in the policy below:
 
 ```json
 {
@@ -67,9 +67,10 @@ Your VPC Endpoint for Secrets Manager is now set up. This ensures a private conn
     ]
 }
 ```
-    - Click Review Policy
-	- Name the policy: ReadSecretPolicy
-	- Click Create policy
+
+  - Click Review Policy
+  - Name the policy: ReadSecretPolicy
+  - Click Create policy
 
 ### Setup a Node.js Project
 
