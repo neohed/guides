@@ -261,7 +261,7 @@ exports.handler = async (event, context) => {
 };
 ```
 
-    - Click "Deploy"
+  - Click "Deploy"
 
 ## Test Your Lambda Function
 
