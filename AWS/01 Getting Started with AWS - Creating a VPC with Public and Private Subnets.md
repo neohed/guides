@@ -93,17 +93,19 @@ We define the size of our subnets using the same CIDR notation as we do for VPC'
 
 3. **Create subnets:**
    - In the VPC Dashboard, click "Subnets" in the left navigation, then "Create subnet".
-   3.1 **Create a public subnet:**
-     - Select your VPC from the dropdown.
-	 - Name your subnet, for instance: `MyDemoSubnet-Pub`
-	 - For Availability Zone you can leave it to "No preference"
-	 - For IPv4 CIDR block, use `10.10.0.0/24`
-	 - Click "Add new subnet"
-   3.2 **Create a private subnet:**
-     - Name: `MyDemoSubnet-Pri`
-	 - AZ as above
-	 - IPv4 CIDR block: `10.10.1.0/24`
-	 - Click "Create subnet"
+
+4. **Create a public subnet:**
+   - Select your VPC from the dropdown.
+   - Name your subnet, for instance: `MyDemoSubnet-Pub`
+   - For Availability Zone you can leave it to "No preference"
+   - For IPv4 CIDR block, use `10.10.0.0/24`
+   - Click "Add new subnet"
+
+5. **Create a private subnet:**
+   - Name: `MyDemoSubnet-Pri`
+   - AZ as above
+   - IPv4 CIDR block: `10.10.1.0/24`
+   - Click "Create subnet"
 
 By default both subnets are auto-assigned to the default route table. Even though you previously created an IGW and attached it to the VPC there are no routes defined to this IGW so internet access isn't possible - your subnets are private.
 
@@ -134,7 +136,7 @@ In summary, a route table serves as a routing guide for network traffic within a
    - Click "Actions" > "Edit subnet associations"
    - Select your **public** subnet, click "Save associations"
 
-1. **Create a route table for private:**
+2. **Create a route table for private:**
    - In the VPC Dashboard, click "Route Tables" in the left navigation, then "Create route table".
    - Name your route table, select your VPC and click "Create".
    - Click "Actions" > "Edit subnet associations"
@@ -239,7 +241,7 @@ By combining VPC Flow Logs with CloudWatch, you can create a comprehensive monit
 ```
   - Click "Update policy"
 
-2. **Enable Flow Logs in VPC:**
+4. **Enable Flow Logs in VPC:**
    - Navigate to the VPC dashboard, select the VPC you created.
    - Click the "Flow logs" tab
    - Click "Create flow log"
