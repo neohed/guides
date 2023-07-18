@@ -99,48 +99,48 @@ In the AWS console, go to IAM, create a new role for Lambda
 
 ## Create a Layer
 
-    - If your zip file is larger than 10MB you need to upload to S3 first and not directly to Lambda. Even though this zip file is less than 10MB, we will use the S3 upload option as practice.
-	- In the console navigate to S3
-	- Click Create Bucket
-	- Provide a bucket name, remember that this name must be globally unique!
-	- Click "Create Bucket"
-	- From the bucket list, click on your bucket.
-	- Upload the .zip file containing your code.
-	- After the upload completes, click on the file in S3, then copy the "Object URL" to your clipboard.
-	
-    - Navigate back to the lambda console
-    - Click "Layers" from the left-hand navigation under "Additional resoures".
-	- Click "Create layer"
-	- Name: my-aws-pg-layer
-    - Select "Upload a file from Amazon S3" and paste in the Object URL from your clipboard.
-	- Under "runtimes" select Node.js
-    - Click "Create".
+  - If your zip file is larger than 10MB you need to upload to S3 first and not directly to Lambda. Even though this zip file is less than 10MB, we will use the S3 upload option as practice.
+  - In the console navigate to S3
+  - Click Create Bucket
+  - Provide a bucket name, remember that this name must be globally unique!
+  - Click "Create Bucket"
+  - From the bucket list, click on your bucket.
+  - Upload the .zip file containing your code.
+  - After the upload completes, click on the file in S3, then copy the "Object URL" to your clipboard.
+
+  - Navigate back to the lambda console
+  - Click "Layers" from the left-hand navigation under "Additional resoures".
+  - Click "Create layer"
+  - Name: my-aws-pg-layer
+  - Select "Upload a file from Amazon S3" and paste in the Object URL from your clipboard.
+  - Under "runtimes" select Node.js
+  - Click "Create".
 
 ## Create a Lambda Function
 
 In the AWS console, go to Lambda and create a new function. Select the following configuration:
 
-    - "Author from scratch" should be selected.
-	- Function name: 'myCRUDLambda'
-    - Runtime: Node.js
-	- Click Create function
+  - "Author from scratch" should be selected.
+  - Function name: 'myCRUDLambda'
+  - Runtime: Node.js
+  - Click Create function
 
 ### Set Role
 
-    - under the Configuration tab, select Permisions:
-		- Click Edit for Execution role
-		- For `existing role` select the role you created in the previously (should be called LambdaCRUDRole)
-	- Click Save
+  - under the Configuration tab, select Permisions:
+    - Click Edit for Execution role
+    - For `existing role` select the role you created in the previously (should be called LambdaCRUDRole)
+  - Click Save
 
 ### Add VPC Configuration to the Lambda Function
 
-    - Under the Configuration tab click VPC on the left.
-	- Click Edit
-	- Select the VPC where your PostgreSQL database resides.
-	- Select the private subnet.
-	- Select the security group for your database, I called mine "my-RDS-psql-SG" (if you're not sure, look in the RDS console, select your database and look for "VPC security groups" under "Connectivity & security")
-		- It should have a rule on port 5432, this is the group you want to use.
-	- Click Save
+  - Under the Configuration tab click VPC on the left.
+  - Click Edit
+  - Select the VPC where your PostgreSQL database resides.
+  - Select the private subnet.
+  - Select the security group for your database, I called mine "my-RDS-psql-SG" (if you're not sure, look in the RDS console, select your database and look for "VPC security groups" under "Connectivity & security")
+    - It should have a rule on port 5432, this is the group you want to use.
+  - Click Save
 
 ### Change Security Group for Your Lambda Function
 
@@ -169,13 +169,13 @@ Now that you've set the environment variable in AWS Lambda, you can use this var
 
 ### Add the layer
 
-    - In the Lambda console, select your function.
-	- In the "Function overview" click "Layers"
-	- In the "Layers" section click "Add a layer"
-	- Under "Choose a layer" select "Custom layers"
-	- From the dropdown select your layer.
-	- From "Version" select 1.
-	- Click "Add"
+  - In the Lambda console, select your function.
+  - In the "Function overview" click "Layers"
+  - In the "Layers" section click "Add a layer"
+  - Under "Choose a layer" select "Custom layers"
+  - From the dropdown select your layer.
+  - From "Version" select 1.
+  - Click "Add"
 
 ## Add the code
 
