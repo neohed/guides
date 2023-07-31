@@ -172,7 +172,7 @@ Parameters:
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/(1[6-9]|2[0-8]))$
     ConstraintDescription: >-
       CIDR block parameter must be in the form x.x.x.x/16-28.
-    Default: 10.0.0.0/19
+    Default: 10.10.32.0/20
   PrivateSubnet1BCIDR:
     Type: String
     Description: >-
@@ -181,7 +181,7 @@ Parameters:
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/(1[6-9]|2[0-8]))$
     ConstraintDescription: >-
       CIDR block parameter must be in the form x.x.x.x/16-28.
-    Default: 10.0.192.0/21
+    Default: 10.10.64.0/20
   PrivateSubnet2ACIDR:
     Type: String
     Description: >-
@@ -189,7 +189,7 @@ Parameters:
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/(1[6-9]|2[0-8]))$
     ConstraintDescription: >-
       CIDR block parameter must be in the form x.x.x.x/16-28.
-    Default: 10.0.32.0/19
+    Default: 10.10.48.0/20
   PrivateSubnet2BCIDR:
     Type: String
     Description: >-
@@ -198,7 +198,7 @@ Parameters:
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/(1[6-9]|2[0-8]))$
     ConstraintDescription: >-
       CIDR block parameter must be in the form x.x.x.x/16-28.
-    Default: 10.0.200.0/21
+    Default: 10.10.80.0/20
   PrivateSubnetATag1:
     Type: String
     Description: >-
@@ -246,7 +246,7 @@ Parameters:
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/(1[6-9]|2[0-8]))$
     ConstraintDescription: >-
       CIDR block parameter must be in the form x.x.x.x/16-28.
-    Default: 10.0.128.0/20
+    Default: 10.10.0.0/20
   PublicSubnet2CIDR:
     Type: String
     Description: >-
@@ -254,7 +254,7 @@ Parameters:
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/(1[6-9]|2[0-8]))$
     ConstraintDescription: >-
       CIDR block parameter must be in the form x.x.x.x/16-28.
-    Default: 10.0.144.0/20
+    Default:  10.10.16.0/20
   PublicSubnetTag1:
     Type: String
     Description: >-
