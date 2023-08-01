@@ -1,9 +1,8 @@
 AWSTemplateFormatVersion: 2010-09-09
 Description: >-
   This template creates a Multi-AZ, multisubnet VPC infrastructure with
-  managed NAT gateways in the public subnet for each Availability Zone. You can
-  also create additional private subnets with dedicated custom network access
-  control lists (ACLs). If you deploy the Quick Start in an AWS Region that doesn't
+  managed NAT gateways in the public subnet for each Availability Zone.
+  If you deploy the Quick Start in an AWS Region that doesn't
   support NAT gateways, NAT instances are deployed instead.
   **WARNING** This template creates AWS resources. You will be billed for the
   AWS resources used if you create a stack from this template. (qs-1qnnspaap)
@@ -23,6 +22,9 @@ Metadata:
         Parameters:
           - VPCCIDR
           - CreatePublicSubnets
+          - GlobalTag1
+          - GlobalTag2
+          - GlobalTag3
           - PublicSubnet1CIDR
           - PublicSubnet2CIDR
           - PublicSubnetTag1
@@ -44,6 +46,12 @@ Metadata:
           - VPCFlowLogsTrafficType
           - VPCFlowLogsCloudWatchKMSKey
     ParameterLabels:
+      GlobalTag1:
+        default: Global Tag 1
+      GlobalTag2:
+        default: Global Tag 2
+      GlobalTag3:
+        default: Global Tag 3
       AvailabilityZones:
         default: Availability Zones
       CreateNATGateways:
@@ -91,6 +99,36 @@ Metadata:
       VPCTenancy:
         default: VPC tenancy
 Parameters:
+  GlobalTag1:
+    Type: String
+    Description: >-
+      Tag to persist resources. In format 'key=value' where 'value' is a Date in DD-MM-YYYY format.
+    AllowedPattern: ^([a-zA-Z0-9+\-._:/@]+=[a-zA-Z0-9+\-.,_:/@ *\\"'\[\]\{\}]*)?$
+    ConstraintDescription: >-
+      Tags must be in format 'key=value'. Keys can contain only
+      [a-zA-Z0-9+\-._:/@]. Values can contain
+      [a-zA-Z0-9+\-._:/@ *\\"'\[\]\{\}].
+    Default: 'resource:protect:till=DD-MM-YYYY'
+  GlobalTag2:
+    Type: String
+    Description: >-
+      Tag to persist resources, in format 'key=value'.
+    AllowedPattern: ^([a-zA-Z0-9+\-._:/@]+=[a-zA-Z0-9+\-.,_:/@ *\\"'\[\]\{\}]*)?$
+    ConstraintDescription: >-
+      Tags must be in format 'key=value'. Keys can contain only
+      [a-zA-Z0-9+\-._:/@]. Values can contain
+      [a-zA-Z0-9+\-._:/@ *\\"'\[\]\{\}].
+    Default: 'resource:protect:owner=David.Taylor'
+  GlobalTag3:
+    Type: String
+    Description: >-
+      Project, in format 'key=value'.
+    AllowedPattern: ^([a-zA-Z0-9+\-._:/@]+=[a-zA-Z0-9+\-.,_:/@ *\\"'\[\]\{\}]*)?$
+    ConstraintDescription: >-
+      Tags must be in format 'key=value'. Keys can contain only
+      [a-zA-Z0-9+\-._:/@]. Values can contain
+      [a-zA-Z0-9+\-._:/@ *\\"'\[\]\{\}].
+    Default: 'Project=TDG'
   AvailabilityZones:
     Type: List<AWS::EC2::AvailabilityZone::Name>
     Description: >-
@@ -150,7 +188,7 @@ Parameters:
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/(1[6-9]|2[0-8]))$
     ConstraintDescription: >-
       CIDR block parameter must be in the form x.x.x.x/16-28.
-    Default: 10.10.128.0/18
+    Default: 10.10.32.0/20
   PrivateSubnet2ACIDR:
     Type: String
     Description: >-
@@ -158,7 +196,7 @@ Parameters:
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/(1[6-9]|2[0-8]))$
     ConstraintDescription: >-
       CIDR block parameter must be in the form x.x.x.x/16-28.
-    Default: 10.10.192.0/18
+    Default: 10.10.48.0/20
   PrivateSubnetATag1:
     Type: String
     Description: >-
@@ -186,7 +224,7 @@ Parameters:
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/(1[6-9]|2[0-8]))$
     ConstraintDescription: >-
       CIDR block parameter must be in the form x.x.x.x/16-28.
-    Default: 10.10.0.0/18
+    Default: 10.10.0.0/20
   PublicSubnet2CIDR:
     Type: String
     Description: >-
@@ -194,7 +232,7 @@ Parameters:
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/(1[6-9]|2[0-8]))$
     ConstraintDescription: >-
       CIDR block parameter must be in the form x.x.x.x/16-28.
-    Default:  10.10.64.0/18
+    Default:  10.10.16.0/20
   PublicSubnetTag1:
     Type: String
     Description: >-
@@ -221,7 +259,7 @@ Parameters:
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/(1[6-9]|2[0-8]))$
     ConstraintDescription: >-
       CIDR block parameter must be in the form x.x.x.x/16-28.
-    Default: 10.0.0.0/16
+    Default: 10.10.0.0/16
   VPCFlowLogsCloudWatchKMSKey:
     Type: String
     Description: >-
@@ -338,6 +376,9 @@ Conditions:
   PublicSubnetTag2Condition: !Not [!Equals [!Ref PublicSubnetTag2, '']]
   VPCFlowLogsCloudWatchKMSKeyCondition: !Not [!Equals [!Ref VPCFlowLogsCloudWatchKMSKey, '']]
   VPCFlowLogsToCloudWatchCondition: !Equals [!Ref CreateVPCFlowLogsToCloudWatch, 'true']
+  GlobalTag1Condition: !Not [!Equals [!Ref GlobalTag1, '']]
+  GlobalTag2Condition: !Not [!Equals [!Ref GlobalTag2, '']]
+  GlobalTag3Condition: !Not [!Equals [!Ref GlobalTag3, '']]
 Resources:
   DHCPOptions:
     Type: AWS::EC2::DHCPOptions
@@ -360,6 +401,21 @@ Resources:
       Tags:
         - Key: Name
           Value: !Ref AWS::StackName
+        - !If
+          - GlobalTag1Condition
+          - Key: !Select [0, !Split ['=', !Ref GlobalTag1]]
+            Value: !Select [1, !Split ['=', !Ref GlobalTag1]]
+          - !Ref AWS::NoValue
+        - !If
+          - GlobalTag2Condition
+          - Key: !Select [0, !Split ['=', !Ref GlobalTag2]]
+            Value: !Select [1, !Split ['=', !Ref GlobalTag2]]
+          - !Ref AWS::NoValue
+        - !If
+          - GlobalTag3Condition
+          - Key: !Select [0, !Split ['=', !Ref GlobalTag3]]
+            Value: !Select [1, !Split ['=', !Ref GlobalTag3]]
+          - !Ref AWS::NoValue
   VPCDHCPOptionsAssociation:
     Type: AWS::EC2::VPCDHCPOptionsAssociation
     Properties:
@@ -372,6 +428,21 @@ Resources:
       Tags:
         - Key: Name
           Value: !Ref AWS::StackName
+        - !If
+          - GlobalTag1Condition
+          - Key: !Select [0, !Split ['=', !Ref GlobalTag1]]
+            Value: !Select [1, !Split ['=', !Ref GlobalTag1]]
+          - !Ref AWS::NoValue
+        - !If
+          - GlobalTag2Condition
+          - Key: !Select [0, !Split ['=', !Ref GlobalTag2]]
+            Value: !Select [1, !Split ['=', !Ref GlobalTag2]]
+          - !Ref AWS::NoValue
+        - !If
+          - GlobalTag3Condition
+          - Key: !Select [0, !Split ['=', !Ref GlobalTag3]]
+            Value: !Select [1, !Split ['=', !Ref GlobalTag3]]
+          - !Ref AWS::NoValue
   VPCGatewayAttachment:
     Condition: PublicSubnetsCondition
     Type: AWS::EC2::VPCGatewayAttachment
@@ -388,6 +459,21 @@ Resources:
       Tags:
         - Key: Name
           Value: Private subnet 1A
+        - !If
+          - GlobalTag1Condition
+          - Key: !Select [0, !Split ['=', !Ref GlobalTag1]]
+            Value: !Select [1, !Split ['=', !Ref GlobalTag1]]
+          - !Ref AWS::NoValue
+        - !If
+          - GlobalTag2Condition
+          - Key: !Select [0, !Split ['=', !Ref GlobalTag2]]
+            Value: !Select [1, !Split ['=', !Ref GlobalTag2]]
+          - !Ref AWS::NoValue
+        - !If
+          - GlobalTag3Condition
+          - Key: !Select [0, !Split ['=', !Ref GlobalTag3]]
+            Value: !Select [1, !Split ['=', !Ref GlobalTag3]]
+          - !Ref AWS::NoValue
         - !If
           - PrivateSubnetATag1Condition
           - Key: !Select [0, !Split ['=', !Ref PrivateSubnetATag1]]
@@ -408,6 +494,21 @@ Resources:
       Tags:
         - Key: Name
           Value: Private subnet 2A
+        - !If
+          - GlobalTag1Condition
+          - Key: !Select [0, !Split ['=', !Ref GlobalTag1]]
+            Value: !Select [1, !Split ['=', !Ref GlobalTag1]]
+          - !Ref AWS::NoValue
+        - !If
+          - GlobalTag2Condition
+          - Key: !Select [0, !Split ['=', !Ref GlobalTag2]]
+            Value: !Select [1, !Split ['=', !Ref GlobalTag2]]
+          - !Ref AWS::NoValue
+        - !If
+          - GlobalTag3Condition
+          - Key: !Select [0, !Split ['=', !Ref GlobalTag3]]
+            Value: !Select [1, !Split ['=', !Ref GlobalTag3]]
+          - !Ref AWS::NoValue
         - !If
           - PrivateSubnetATag1Condition
           - Key: !Select [0, !Split ['=', !Ref PrivateSubnetATag1]]
@@ -434,6 +535,21 @@ Resources:
       Tags:
         - Key: Name
           Value: Public subnet 1
+        - !If
+          - GlobalTag1Condition
+          - Key: !Select [0, !Split ['=', !Ref GlobalTag1]]
+            Value: !Select [1, !Split ['=', !Ref GlobalTag1]]
+          - !Ref AWS::NoValue
+        - !If
+          - GlobalTag2Condition
+          - Key: !Select [0, !Split ['=', !Ref GlobalTag2]]
+            Value: !Select [1, !Split ['=', !Ref GlobalTag2]]
+          - !Ref AWS::NoValue
+        - !If
+          - GlobalTag3Condition
+          - Key: !Select [0, !Split ['=', !Ref GlobalTag3]]
+            Value: !Select [1, !Split ['=', !Ref GlobalTag3]]
+          - !Ref AWS::NoValue
         - !If
           - PublicSubnetTag1Condition
           - Key: !Select [0, !Split ['=', !Ref PublicSubnetTag1]]
@@ -462,6 +578,21 @@ Resources:
         - Key: Name
           Value: Public subnet 2
         - !If
+          - GlobalTag1Condition
+          - Key: !Select [0, !Split ['=', !Ref GlobalTag1]]
+            Value: !Select [1, !Split ['=', !Ref GlobalTag1]]
+          - !Ref AWS::NoValue
+        - !If
+          - GlobalTag2Condition
+          - Key: !Select [0, !Split ['=', !Ref GlobalTag2]]
+            Value: !Select [1, !Split ['=', !Ref GlobalTag2]]
+          - !Ref AWS::NoValue
+        - !If
+          - GlobalTag3Condition
+          - Key: !Select [0, !Split ['=', !Ref GlobalTag3]]
+            Value: !Select [1, !Split ['=', !Ref GlobalTag3]]
+          - !Ref AWS::NoValue
+        - !If
           - PublicSubnetTag1Condition
           - Key: !Select [0, !Split ['=', !Ref PublicSubnetTag1]]
             Value: !Select [1, !Split ['=', !Ref PublicSubnetTag1]]
@@ -482,6 +613,21 @@ Resources:
           Value: Private subnet 1A
         - Key: Network
           Value: Private
+        - !If
+          - GlobalTag1Condition
+          - Key: !Select [0, !Split ['=', !Ref GlobalTag1]]
+            Value: !Select [1, !Split ['=', !Ref GlobalTag1]]
+          - !Ref AWS::NoValue
+        - !If
+          - GlobalTag2Condition
+          - Key: !Select [0, !Split ['=', !Ref GlobalTag2]]
+            Value: !Select [1, !Split ['=', !Ref GlobalTag2]]
+          - !Ref AWS::NoValue
+        - !If
+          - GlobalTag3Condition
+          - Key: !Select [0, !Split ['=', !Ref GlobalTag3]]
+            Value: !Select [1, !Split ['=', !Ref GlobalTag3]]
+          - !Ref AWS::NoValue
   PrivateSubnet1ARoute:
     Condition: NATGateways&PublicSubnets&PrivateSubnetsCondition
     Type: AWS::EC2::Route
@@ -505,6 +651,21 @@ Resources:
           Value: Private subnet 2A
         - Key: Network
           Value: Private
+        - !If
+          - GlobalTag1Condition
+          - Key: !Select [0, !Split ['=', !Ref GlobalTag1]]
+            Value: !Select [1, !Split ['=', !Ref GlobalTag1]]
+          - !Ref AWS::NoValue
+        - !If
+          - GlobalTag2Condition
+          - Key: !Select [0, !Split ['=', !Ref GlobalTag2]]
+            Value: !Select [1, !Split ['=', !Ref GlobalTag2]]
+          - !Ref AWS::NoValue
+        - !If
+          - GlobalTag3Condition
+          - Key: !Select [0, !Split ['=', !Ref GlobalTag3]]
+            Value: !Select [1, !Split ['=', !Ref GlobalTag3]]
+          - !Ref AWS::NoValue
   PrivateSubnet2ARoute:
     Condition: NATGateways&PublicSubnets&PrivateSubnetsCondition
     Type: AWS::EC2::Route
@@ -528,6 +689,21 @@ Resources:
           Value: Public Subnets
         - Key: Network
           Value: Public
+        - !If
+          - GlobalTag1Condition
+          - Key: !Select [0, !Split ['=', !Ref GlobalTag1]]
+            Value: !Select [1, !Split ['=', !Ref GlobalTag1]]
+          - !Ref AWS::NoValue
+        - !If
+          - GlobalTag2Condition
+          - Key: !Select [0, !Split ['=', !Ref GlobalTag2]]
+            Value: !Select [1, !Split ['=', !Ref GlobalTag2]]
+          - !Ref AWS::NoValue
+        - !If
+          - GlobalTag3Condition
+          - Key: !Select [0, !Split ['=', !Ref GlobalTag3]]
+            Value: !Select [1, !Split ['=', !Ref GlobalTag3]]
+          - !Ref AWS::NoValue
   PublicSubnetRoute:
     Condition: PublicSubnetsCondition
     DependsOn: VPCGatewayAttachment
@@ -557,6 +733,21 @@ Resources:
       Tags:
         - Key: Name
           Value: NAT1EIP
+        - !If
+          - GlobalTag1Condition
+          - Key: !Select [0, !Split ['=', !Ref GlobalTag1]]
+            Value: !Select [1, !Split ['=', !Ref GlobalTag1]]
+          - !Ref AWS::NoValue
+        - !If
+          - GlobalTag2Condition
+          - Key: !Select [0, !Split ['=', !Ref GlobalTag2]]
+            Value: !Select [1, !Split ['=', !Ref GlobalTag2]]
+          - !Ref AWS::NoValue
+        - !If
+          - GlobalTag3Condition
+          - Key: !Select [0, !Split ['=', !Ref GlobalTag3]]
+            Value: !Select [1, !Split ['=', !Ref GlobalTag3]]
+          - !Ref AWS::NoValue
   NAT2EIP:
     Condition: NATGateways&PublicSubnets&PrivateSubnetsCondition
     DependsOn: VPCGatewayAttachment
@@ -566,6 +757,21 @@ Resources:
       Tags:
         - Key: Name
           Value: NAT2EIP
+        - !If
+          - GlobalTag1Condition
+          - Key: !Select [0, !Split ['=', !Ref GlobalTag1]]
+            Value: !Select [1, !Split ['=', !Ref GlobalTag1]]
+          - !Ref AWS::NoValue
+        - !If
+          - GlobalTag2Condition
+          - Key: !Select [0, !Split ['=', !Ref GlobalTag2]]
+            Value: !Select [1, !Split ['=', !Ref GlobalTag2]]
+          - !Ref AWS::NoValue
+        - !If
+          - GlobalTag3Condition
+          - Key: !Select [0, !Split ['=', !Ref GlobalTag3]]
+            Value: !Select [1, !Split ['=', !Ref GlobalTag3]]
+          - !Ref AWS::NoValue
   NATGateway1:
     Condition: NATGateways&PublicSubnets&PrivateSubnetsCondition
     DependsOn: VPCGatewayAttachment
@@ -576,6 +782,21 @@ Resources:
       Tags:
         - Key: Name
           Value: NATGateway1
+        - !If
+          - GlobalTag1Condition
+          - Key: !Select [0, !Split ['=', !Ref GlobalTag1]]
+            Value: !Select [1, !Split ['=', !Ref GlobalTag1]]
+          - !Ref AWS::NoValue
+        - !If
+          - GlobalTag2Condition
+          - Key: !Select [0, !Split ['=', !Ref GlobalTag2]]
+            Value: !Select [1, !Split ['=', !Ref GlobalTag2]]
+          - !Ref AWS::NoValue
+        - !If
+          - GlobalTag3Condition
+          - Key: !Select [0, !Split ['=', !Ref GlobalTag3]]
+            Value: !Select [1, !Split ['=', !Ref GlobalTag3]]
+          - !Ref AWS::NoValue
   NATGateway2:
     Condition: NATGateways&PublicSubnets&PrivateSubnetsCondition
     DependsOn: VPCGatewayAttachment
@@ -586,6 +807,21 @@ Resources:
       Tags:
         - Key: Name
           Value: NATGateway2
+        - !If
+          - GlobalTag1Condition
+          - Key: !Select [0, !Split ['=', !Ref GlobalTag1]]
+            Value: !Select [1, !Split ['=', !Ref GlobalTag1]]
+          - !Ref AWS::NoValue
+        - !If
+          - GlobalTag2Condition
+          - Key: !Select [0, !Split ['=', !Ref GlobalTag2]]
+            Value: !Select [1, !Split ['=', !Ref GlobalTag2]]
+          - !Ref AWS::NoValue
+        - !If
+          - GlobalTag3Condition
+          - Key: !Select [0, !Split ['=', !Ref GlobalTag3]]
+            Value: !Select [1, !Split ['=', !Ref GlobalTag3]]
+          - !Ref AWS::NoValue
   S3VPCEndpoint:
     Condition: PrivateSubnetsCondition
     Type: AWS::EC2::VPCEndpoint
@@ -666,6 +902,21 @@ Resources:
       Tags:
         - Key: Name
           Value: VPC Flow Logs CloudWatch
+        - !If
+          - GlobalTag1Condition
+          - Key: !Select [0, !Split ['=', !Ref GlobalTag1]]
+            Value: !Select [1, !Split ['=', !Ref GlobalTag1]]
+          - !Ref AWS::NoValue
+        - !If
+          - GlobalTag2Condition
+          - Key: !Select [0, !Split ['=', !Ref GlobalTag2]]
+            Value: !Select [1, !Split ['=', !Ref GlobalTag2]]
+          - !Ref AWS::NoValue
+        - !If
+          - GlobalTag3Condition
+          - Key: !Select [0, !Split ['=', !Ref GlobalTag3]]
+            Value: !Select [1, !Split ['=', !Ref GlobalTag3]]
+          - !Ref AWS::NoValue
 Outputs:
   NAT1EIP:
     Condition: NATGateways&PublicSubnets&PrivateSubnetsCondition
