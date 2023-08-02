@@ -108,7 +108,6 @@ Parameters:
       Tags must be in format 'key=value'. Keys can contain only
       [a-zA-Z0-9+\-._:/@]. Values can contain
       [a-zA-Z0-9+\-._:/@ *\\"'\[\]\{\}].
-    Default: "NotAllowedValue" # Invalid default value makes the parameter required
   GlobalTag2:
     Type: String
     Description: >-
@@ -118,7 +117,6 @@ Parameters:
       Tags must be in format 'key=value'. Keys can contain only
       [a-zA-Z0-9+\-._:/@]. Values can contain
       [a-zA-Z0-9+\-._:/@ *\\"'\[\]\{\}].
-    Default: "NotAllowedValue" # Invalid default value makes the parameter required
   GlobalTag3:
     Type: String
     Description: >-
