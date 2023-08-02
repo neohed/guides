@@ -102,13 +102,13 @@ Parameters:
   GlobalTag1:
     Type: String
     Description: >-
-      Tag to persist resources. In format 'key=value' where 'value' is a Date in DD-MM-YYYY format.
+      Tag to persist resources. Format 'resource:protect:till=DD-MM-YYYY' where the Date in DD-MM-YYYY format is the resource expiry date.
     AllowedPattern: ^([a-zA-Z0-9+\-._:/@]+=[a-zA-Z0-9+\-.,_:/@ *\\"'\[\]\{\}]*)?$
     ConstraintDescription: >-
       Tags must be in format 'key=value'. Keys can contain only
       [a-zA-Z0-9+\-._:/@]. Values can contain
       [a-zA-Z0-9+\-._:/@ *\\"'\[\]\{\}].
-    Default: 'resource:protect:till=DD-MM-YYYY'
+    Default: "NotAllowedValue" # Invalid default value makes the parameter required
   GlobalTag2:
     Type: String
     Description: >-
