@@ -366,7 +366,6 @@ Conditions:
   PublicSubnets&4AZCondition: !And
     - !Condition PublicSubnetsCondition
     - !Condition 4AZCondition
-  PrivateSubnetsCondition: !Equals [!Ref CreatePrivateSubnets, 'true']
   PublicSubnetsCondition: !Equals [!Ref CreatePublicSubnets, 'true']
   PrivateSubnetATag1Condition: !Not [!Equals [!Ref PrivateSubnetATag1, '']]
   PrivateSubnetATag2Condition: !Not [!Equals [!Ref PrivateSubnetATag2, '']]
