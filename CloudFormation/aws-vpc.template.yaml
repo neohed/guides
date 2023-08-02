@@ -39,6 +39,7 @@ Metadata:
           - PrivateSubnetATag1
           - PrivateSubnetATag2
           - VPCTenancy
+          - CreateInternetGateway
       - Label:
           default: VPC Flow Logs configuration
         Parameters:
@@ -49,6 +50,8 @@ Metadata:
           - VPCFlowLogsTrafficType
           - VPCFlowLogsCloudWatchKMSKey
     ParameterLabels:
+      CreateInternetGateway:
+        default: Create Internet Gateway
       GlobalTag1:
         default: Global Tag 1
       GlobalTag2:
@@ -102,6 +105,11 @@ Metadata:
       VPCTenancy:
         default: VPC tenancy
 Parameters:
+  CreateInternetGateway:
+    Description: "Set to true to create an Internet Gateway, false to skip creation."
+    Type: String
+    AllowedValues: ["true", "false"]
+    Default: "false"  # Set the default value to true to create the Internet Gateway by default.
   GlobalTag1:
     Type: String
     Description: >-
@@ -379,6 +387,10 @@ Conditions:
   GlobalTag1Condition: !Not [!Equals [!Ref GlobalTag1, '']]
   GlobalTag2Condition: !Not [!Equals [!Ref GlobalTag2, '']]
   GlobalTag3Condition: !Not [!Equals [!Ref GlobalTag3, '']]
+  ShouldCreateInternetGateway: !Equals [!Ref CreateInternetGateway, "true"]
+  PublicSubnetsCondition&ShouldCreateInternetGateway: !And
+    - !Condition PublicSubnetsCondition
+    - !Condition ShouldCreateInternetGateway
 Resources:
   DHCPOptions:
     Type: AWS::EC2::DHCPOptions
@@ -422,7 +434,7 @@ Resources:
       VpcId: !Ref VPC
       DhcpOptionsId: !Ref DHCPOptions
   InternetGateway:
-    Condition: PublicSubnetsCondition
+    Condition: PublicSubnetsCondition&ShouldCreateInternetGateway
     Type: AWS::EC2::InternetGateway
     Properties:
       Tags:
