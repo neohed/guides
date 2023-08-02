@@ -456,7 +456,7 @@ Resources:
             Value: !Select [1, !Split ['=', !Ref GlobalTag3]]
           - !Ref AWS::NoValue
   VPCGatewayAttachment:
-    Condition: PublicSubnetsCondition
+    Condition: PublicSubnetsCondition&ShouldCreateInternetGateway
     Type: AWS::EC2::VPCGatewayAttachment
     Properties:
       VpcId: !Ref VPC
@@ -717,7 +717,7 @@ Resources:
             Value: !Select [1, !Split ['=', !Ref GlobalTag3]]
           - !Ref AWS::NoValue
   PublicSubnetRoute:
-    Condition: PublicSubnetsCondition
+    Condition: PublicSubnetsCondition&ShouldCreateInternetGateway
     DependsOn: VPCGatewayAttachment
     Type: AWS::EC2::Route
     Properties:
