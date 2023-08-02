@@ -13,6 +13,12 @@ Metadata:
   AWS::CloudFormation::Interface:
     ParameterGroups:
       - Label:
+          default: Required Persistence Tags
+        Parameters:
+          - GlobalTag1
+          - GlobalTag2
+          - GlobalTag3
+      - Label:
           default: Availability Zone configuration
         Parameters:
           - AvailabilityZones
@@ -22,9 +28,6 @@ Metadata:
         Parameters:
           - VPCCIDR
           - CreatePublicSubnets
-          - GlobalTag1
-          - GlobalTag2
-          - GlobalTag3
           - PublicSubnet1CIDR
           - PublicSubnet2CIDR
           - PublicSubnetTag1
