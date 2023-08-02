@@ -348,20 +348,6 @@ Conditions:
     - !Condition 4AZCondition
   4AZCondition: !Equals [!Ref NumberOfAZs, '4']
   NATGatewaysCondition: !Equals [!Ref CreateNATGateways, 'true']
-  NATGateways&PublicSubnets&PrivateSubnetsCondition: !And
-    - !Condition NATGatewaysCondition
-    - !Condition PublicSubnetsCondition
-    - !Condition PrivateSubnetsCondition
-  NATGateways&PublicSubnets&PrivateSubnets&3AZCondition: !And
-    - !Condition NATGatewaysCondition
-    - !Condition PublicSubnetsCondition
-    - !Condition PrivateSubnetsCondition
-    - !Condition 3AZCondition
-  NATGateways&PublicSubnets&PrivateSubnets&4AZCondition: !And
-    - !Condition NATGatewaysCondition
-    - !Condition PublicSubnetsCondition
-    - !Condition PrivateSubnetsCondition
-    - !Condition 4AZCondition
   EURegionCondition: !Equals [!Ref AWS::Region, eu-west-2]
   PrivateSubnetsCondition: !Equals [!Ref CreatePrivateSubnets, 'true']
   PrivateSubnets&3AZCondition: !And
@@ -391,6 +377,23 @@ Conditions:
   PublicSubnetsCondition&ShouldCreateInternetGateway: !And
     - !Condition PublicSubnetsCondition
     - !Condition ShouldCreateInternetGateway
+  NATGateways&PublicSubnets&PrivateSubnetsCondition: !And
+    - !Condition NATGatewaysCondition
+    - !Condition PublicSubnetsCondition
+    - !Condition PrivateSubnetsCondition
+    - !Condition PublicSubnetsCondition&ShouldCreateInternetGateway
+  NATGateways&PublicSubnets&PrivateSubnets&3AZCondition: !And
+    - !Condition NATGatewaysCondition
+    - !Condition PublicSubnetsCondition
+    - !Condition PrivateSubnetsCondition
+    - !Condition 3AZCondition
+    - !Condition PublicSubnetsCondition&ShouldCreateInternetGateway
+  NATGateways&PublicSubnets&PrivateSubnets&4AZCondition: !And
+    - !Condition NATGatewaysCondition
+    - !Condition PublicSubnetsCondition
+    - !Condition PrivateSubnetsCondition
+    - !Condition 4AZCondition
+    - !Condition PublicSubnetsCondition&ShouldCreateInternetGateway
 Resources:
   DHCPOptions:
     Type: AWS::EC2::DHCPOptions
@@ -460,7 +463,10 @@ Resources:
     Type: AWS::EC2::VPCGatewayAttachment
     Properties:
       VpcId: !Ref VPC
-      InternetGatewayId: !Ref InternetGateway
+      InternetGatewayId: !If
+        - PublicSubnetsCondition&ShouldCreateInternetGateway
+        - !Ref InternetGateway
+        - !Ref AWS::NoValue
   PrivateSubnet1A:
     Condition: PrivateSubnetsCondition
     Type: AWS::EC2::Subnet
@@ -723,7 +729,10 @@ Resources:
     Properties:
       RouteTableId: !Ref PublicSubnetRouteTable
       DestinationCidrBlock: 0.0.0.0/0
-      GatewayId: !Ref InternetGateway
+      GatewayId:  !If
+        - PublicSubnetsCondition&ShouldCreateInternetGateway
+        - !Ref InternetGateway
+        - !Ref AWS::NoValue
   PublicSubnet1RouteTableAssociation:
     Condition: PublicSubnetsCondition
     Type: AWS::EC2::SubnetRouteTableAssociation
