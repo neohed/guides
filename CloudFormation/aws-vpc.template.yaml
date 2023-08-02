@@ -112,13 +112,13 @@ Parameters:
   GlobalTag2:
     Type: String
     Description: >-
-      Tag to persist resources, in format 'key=value'.
+      Tag to persist resources. Format 'resource:protect:owner=<OWNER>' where <OWNER> is the username you login to AWS with.
     AllowedPattern: ^([a-zA-Z0-9+\-._:/@]+=[a-zA-Z0-9+\-.,_:/@ *\\"'\[\]\{\}]*)?$
     ConstraintDescription: >-
       Tags must be in format 'key=value'. Keys can contain only
       [a-zA-Z0-9+\-._:/@]. Values can contain
       [a-zA-Z0-9+\-._:/@ *\\"'\[\]\{\}].
-    Default: 'resource:protect:owner=David.Taylor'
+    Default: "NotAllowedValue" # Invalid default value makes the parameter required
   GlobalTag3:
     Type: String
     Description: >-
