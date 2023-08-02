@@ -354,7 +354,7 @@ Conditions:
     - !Condition PublicSubnetsCondition
     - !Condition PrivateSubnetsCondition
     - !Condition 4AZCondition
-  NVirginiaRegionCondition: !Equals [!Ref AWS::Region, us-east-1]
+  EURegionCondition: !Equals [!Ref AWS::Region, eu-west-2]
   PrivateSubnetsCondition: !Equals [!Ref CreatePrivateSubnets, 'true']
   PrivateSubnets&3AZCondition: !And
     - !Condition PrivateSubnetsCondition
@@ -383,7 +383,7 @@ Resources:
   DHCPOptions:
     Type: AWS::EC2::DHCPOptions
     Properties:
-      DomainName: !If [NVirginiaRegionCondition, ec2.internal, !Sub '${AWS::Region}.compute.internal']
+      DomainName: !If [EURegionCondition, ec2.internal, !Sub '${AWS::Region}.compute.internal']
       DomainNameServers:
         - AmazonProvidedDNS
       Tags:
