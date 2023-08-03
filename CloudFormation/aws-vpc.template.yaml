@@ -109,7 +109,7 @@ Parameters:
     Description: "Set to true to create an Internet Gateway, false to skip creation."
     Type: String
     AllowedValues: ["true", "false"]
-    Default: "false"  # Set the default value to true to create the Internet Gateway by default.
+    Default: "true"  # Set the default value to true to create the Internet Gateway by default.
   GlobalTag1:
     Type: String
     Description: >-
