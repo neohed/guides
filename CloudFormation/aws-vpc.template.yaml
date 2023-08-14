@@ -119,6 +119,7 @@ Parameters:
       Tags must be in format 'key=value'. Keys can contain only
       [a-zA-Z0-9+\-._:/@]. Values can contain
       [a-zA-Z0-9+\-._:/@ *\\"'\[\]\{\}].
+    Default: ''
   GlobalTag2:
     Type: String
     Description: >-
@@ -128,6 +129,7 @@ Parameters:
       Tags must be in format 'key=value'. Keys can contain only
       [a-zA-Z0-9+\-._:/@]. Values can contain
       [a-zA-Z0-9+\-._:/@ *\\"'\[\]\{\}].
+    Default: ''
   GlobalTag3:
     Type: String
     Description: >-
@@ -1009,8 +1011,6 @@ Outputs:
     Condition: PublicSubnetsCondition
     Description: Public subnet 1 ID in Availability Zone 1.
     Value: !Ref PublicSubnet1
-    Export:
-      Name: !Sub ${AWS::StackName}-PublicSubnet1ID
   PublicSubnet2CIDR:
     Condition: PublicSubnetsCondition
     Description: Public subnet 2 CIDR in Availability Zone 2.

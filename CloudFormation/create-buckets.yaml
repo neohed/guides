@@ -1,8 +1,6 @@
 AWSTemplateFormatVersion: 2010-09-09
 Description: >-
-  This template creates the dev stack for project TDG:
-  * VPC, etc.
-  * Cloud9 environments for developers
+  This template creates buckets.
 Metadata:
   LICENSE: Apache License, Version 2.0
   QuickStartDocumentation:
@@ -15,20 +13,24 @@ Metadata:
           - TemplateBucketURL
     ParameterLabels:
       TemplateBucketURL:
-        default: Template Bucket URL
+        default: Bucket template location
 Parameters:
   TemplateBucketURL:
     Type: String
     Description: >-
-      Path to VPC CloudFormation template `.yaml` file, in S3 bucket.
-    AllowedPattern: >-
-      ^https://.*\.yaml$
+      Path to CloudFormation template `.yaml` file, in S3 bucket.
     ConstraintDescription: >-
       Must be a valid AWS Bucket URL.
 Resources:
-  MyNestedStack:
+  FirstNestedBucket:
     Type: AWS::CloudFormation::Stack
     Properties:
       TemplateURL: !Ref TemplateBucketURL
       Parameters:
-        AvailabilityZones: ['eu-west-2a', 'eu-west-2b']
+        MyBucketName: "dave-test-bucket-u38f74hd93"
+  SecondNestedBucket:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Ref TemplateBucketURL
+      Parameters:
+        MyBucketName: !GetAtt FirstNestedBucket.Outputs.ConcatenatedBucketName

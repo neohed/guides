@@ -1,5 +1,8 @@
 # AWS CloudFormation Nested Stacks
 
+[Nested Stack Parameters - Output vs Export](https://stackoverflow.com/questions/67605906/nested-cloudformation-child-template-not-picking-up-parameter)
+[Output vs Export](https://stackoverflow.com/questions/62441152/difference-between-an-output-an-export)
+
 1. Parent Stack (caller)
 
 ```yaml

@@ -1,0 +1,59 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: >-
+  This template creates the dev stack for project TDG:
+  * VPC, etc.
+  * Cloud9 environments for developers
+Metadata:
+  LICENSE: Apache License, Version 2.0
+  QuickStartDocumentation:
+    EntrypointName: Launch TDG Dev Stack
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+      - Label:
+          default: Required Parameters
+        Parameters:
+          - TemplateVPCBucketURL
+          - TemplateCloud9BucketURL
+          - AvailabilityZones
+    ParameterLabels:
+      TemplateVPCBucketURL:
+        default: VPC Template Bucket URL
+      TemplateCloud9BucketURL:
+        default: Cloud9 Template Bucket URL
+      AvailabilityZones:
+        default: Availability Zones
+Parameters:
+  TemplateVPCBucketURL:
+    Type: String
+    Description: >-
+      Path to VPC CloudFormation template `.yaml` file, in S3 bucket.
+    AllowedPattern: >-
+      ^https://.*\.yaml$
+    ConstraintDescription: >-
+      Must be a valid AWS Bucket URL.
+  TemplateCloud9BucketURL:
+    Type: String
+    Description: >-
+      Path to Cloud9 CloudFormation template `.yaml` file, in S3 bucket.
+    AllowedPattern: >-
+      ^https://.*\.yaml$
+    ConstraintDescription: >-
+      Must be a valid AWS Bucket URL.
+  AvailabilityZones:
+    Type: List<AWS::EC2::AvailabilityZone::Name>
+    Description: >-
+      Availability Zones to use for the subnets in the VPC. The
+      specified logical order is preserved.
+Resources:
+  NestedVPCStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Ref TemplateVPCBucketURL
+      Parameters:
+        AvailabilityZones: !Join [ ",", !Ref AvailabilityZones ]
+  NestedCloud9Stack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Ref TemplateCloud9BucketURL
+      Parameters:
+        PublicSubnet1: !GetAtt NestedVPCStack.Outputs.PublicSubnet1ID
