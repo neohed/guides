@@ -19,6 +19,9 @@ AWSTemplateFormatVersion: '2010-09-09'
 Description: AWS Cloud9 Environment with AWS CodeCommit Repository
 
 Parameters:
+  PublicSubnet1:
+    Description: Subnet to use
+    Type:        String
 
   EC2InstanceType:
     Description: EC2 instance type on which IDE runs
@@ -78,11 +81,6 @@ Parameters:
     Type:           String
     Default:        "test"
 
-  VPCStackName:
-    Description:    Name of an VPC Stack.
-    Type:           String
-    Default:        "vpc"
-
   RepositoryName:
     Description:    CodeCommit Repository Name
     Type:           String
@@ -96,8 +94,7 @@ Resources:
       Name: !Sub '${User}-${Env}-Cloud9-IDE'
       Description: !Sub '${User} Cloud9 IDE'
       AutomaticStopTimeMinutes: !Ref 'AutoHibernateTimeout'
-      SubnetId:
-        Fn::ImportValue: !Sub '${VPCStackName}-PublicSubnet1'
+      SubnetId: !Ref PublicSubnet1
       InstanceType: !Ref 'EC2InstanceType'
       Repositories:
           - RepositoryUrl: !Sub 'https://git-codecommit.${AWS::Region}.amazonaws.com/v1/repos/${RepositoryName}'
