@@ -14,19 +14,21 @@ https://aws.amazon.com/blogs/infrastructure-and-automation/conditionally-launch-
 ```yaml
 AWSTemplateFormatVersion: 2010-09-09
 Resources:
-  NestedStackVPC:
+  NestedStackCreateS3:
     Type: AWS::CloudFormation::Stack
 	Properties:
-	  TemplateURL: https://s3-bucket-url...
+	  TemplateURL: https://s3-bucket-url-to-nested-stack-template...
 	  TimeoutInMinutes: 60
 Outputs:
   StackRef:
-    Value: !Ref NestedStackVPC
+    Value: !Ref NestedStackCreateS3
   OutputFromNestedStack:
-    Value: !GetAtt NestedStackVPC.Outputs.BucketName
+    Value: !GetAtt NestedStackCreateS3.Outputs.BucketName
 ```
 
-2. Child stack (callee)
+2. Nested Stack (callee)
+
+Upload this nested stack to an S3 bucket, e.g: https://s3-bucket-url-to-nested-stack-template... so it can be referenced by the parent stack template.
 
 ```yaml
 AWSTemplateFormatVersion: 2010-09-09
